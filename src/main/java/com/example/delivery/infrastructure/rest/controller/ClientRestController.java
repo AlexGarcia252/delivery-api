@@ -1,16 +1,14 @@
 package com.example.delivery.infrastructure.rest.controller;
 
 import com.example.delivery.application.ICreateClientInteractor;
+import com.example.delivery.application.IGetClientByIdInteractor;
 import com.example.delivery.domain.model.Client;
 import com.example.delivery.infrastructure.rest.mapper.ClientDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClientRestController {
 
     private final ICreateClientInteractor createClientInteractor;
+    private final IGetClientByIdInteractor getClientByIdInteractor;
     private final ClientDtoMapper clientDtoMapper;
 
     @PostMapping
@@ -25,6 +24,16 @@ public class ClientRestController {
         Client domain = clientDtoMapper.toDomain(dto);
         Client saved = createClientInteractor.createClient(domain);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientDtoMapper.toDto(saved));
+    }
+    @GetMapping("/{document}")
+    public ResponseEntity<ClientResponseDto> getClientByDocument(@PathVariable String document) {
+        Client client = getClientByIdInteractor.execute(document);
+
+        if (client == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(clientDtoMapper.toDto(client));
     }
 
 }
