@@ -26,4 +26,14 @@ public class ClientRepositoryAdapter implements ClientRepositoryPort {
     public boolean existsByDocument(String document) {
         return clientJpaRepository.existsByDocument(document);
     }
+
+    @Override
+    public Client getClientById(String id) {
+        ClientEntity clientEntity = clientJpaRepository.findByDocument(id);
+        if (clientEntity == null) {
+            return null;
+        }
+        Client client = ClientMapper.toDomain(clientEntity);
+        return client;
+    }
 }
