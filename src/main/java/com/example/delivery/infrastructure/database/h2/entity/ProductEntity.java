@@ -1,5 +1,6 @@
 package com.example.delivery.infrastructure.database.h2.entity;
 
+import com.example.delivery.domain.model.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,25 +18,21 @@ import java.math.BigDecimal;
 @Table(name = "products")
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID productId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
+    private UUID uuid;
+
+    @Column(nullable = false, length = 255)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String description;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal basePrice;
-
-    @Column(nullable = false)
-    private boolean available = false;
-
-    @Column(nullable = false)
-    private Integer sells = 0;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "categoryId")
+    @Enumerated(EnumType.STRING)
     private Category category;
+
+    private String description;
+    private BigDecimal price;
+    private boolean available;
+
+
 }
