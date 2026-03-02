@@ -8,6 +8,8 @@ import com.example.delivery.infrastructure.database.h2.repository.ProductJpaRepo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Component
 public class ProductRepositoryAdapter implements ProductRepositoryPort {
@@ -16,14 +18,23 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Override
     public Product createProduct(Product product) {
-        ProductEntity productEntity=productMapper.toEntity(product);
-        ProductEntity saved= productJpaRepository.save(productEntity);
-        return productMapper.toDomain(productEntity);
-
+        ProductEntity productEntity = productMapper.toEntity(product);
+        ProductEntity saved = productJpaRepository.save(productEntity);
+        return productMapper.toDomain(saved);
     }
 
     @Override
     public boolean existsByName(String name) {
         return productJpaRepository.existsByName(name);
+    }
+
+
+    @Override
+    public Product getProductByUuid(UUID uuid) {
+        ProductEntity productEntity = productJpaRepository.findByUuid(uuid);
+        if (productEntity == null) {
+            return null;
+        }
+        return productMapper.toDomain(productEntity);
     }
 }
