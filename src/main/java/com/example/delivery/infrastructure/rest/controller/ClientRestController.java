@@ -1,6 +1,7 @@
 package com.example.delivery.infrastructure.rest.controller;
 
 import com.example.delivery.application.ICreateClientInteractor;
+import com.example.delivery.application.IDeleteClientInteractor;
 import com.example.delivery.application.IGetClientByIdInteractor;
 import com.example.delivery.domain.model.Client;
 import com.example.delivery.infrastructure.rest.mapper.ClientDtoMapper;
@@ -22,6 +23,7 @@ public class ClientRestController {
 
     private final ICreateClientInteractor createClientInteractor;
     private final IGetClientByIdInteractor getClientByIdInteractor;
+    private final IDeleteClientInteractor deleteClientInteractor;
     private final ClientDtoMapper clientDtoMapper;
 
     @Operation(summary = "Crear un nuevo cliente", description = "Crea un nuevo cliente en el sistema. El documento debe ser único.")
@@ -51,6 +53,23 @@ public class ClientRestController {
         }
 
         return ResponseEntity.ok(clientDtoMapper.toDto(client));
+    }
+
+    @Operation(summary = "Borrar al cliente", description = "Borra al cliente por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cliente encontrado"),
+            @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
+    })
+    @DeleteMapping("/{document}/delete")
+    public ResponseEntity<ClientResponseDto> deleteClient(@PathVariable String document){
+        Client client = getClientByIdInteractor.execute(document);
+
+        if (client == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        deleteClientInteractor.deleteClient(client);
+        return ResponseEntity.ok(null);
     }
 
 }

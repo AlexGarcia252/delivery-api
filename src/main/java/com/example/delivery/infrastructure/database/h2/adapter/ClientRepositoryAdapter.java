@@ -36,4 +36,14 @@ public class ClientRepositoryAdapter implements ClientRepositoryPort {
         Client client = ClientMapper.toDomain(clientEntity);
         return client;
     }
+
+    @Override
+    public Client deleteClient(Client client){
+        ClientEntity clientEntity = clientMapper.toEntity(client);
+        if (clientEntity == null){
+            return null;
+        }
+        clientJpaRepository.delete(clientEntity);
+        return null;
+    }
 }
