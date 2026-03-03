@@ -2,6 +2,8 @@ package com.example.delivery.infrastructure.rest.controller;
 
 import com.example.delivery.application.ICreateProductInteractor;
 import com.example.delivery.application.IGetProductByUuidInteractor;
+import com.example.delivery.application.IUpdateProductInteractor;
+import com.example.delivery.domain.model.Category;
 import com.example.delivery.domain.model.Product;
 import com.example.delivery.infrastructure.rest.mapper.ProductDtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +27,7 @@ public class ProductRestController {
 
     private final ICreateProductInteractor createProductInteractor;
     private final IGetProductByUuidInteractor getProductByUuidInteractor;
+    private final IUpdateProductInteractor updateProductInteractor;
     private final ProductDtoMapper productDtoMapper;
 
     @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto en el sistema. El nombre debe ser único.")
@@ -56,5 +59,27 @@ public class ProductRestController {
 
         ProductResponseDto response = productDtoMapper.toDto(product);
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Actualiza producto", description = "Cambia los datos del producto por nuevos datos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado"),
+            @ApiResponse(responseCode = "", description = "")
+    })
+    @PutMapping("/{uuid}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @PathVariable UUID uuid,
+            @Valid @RequestBody ProductRequestDto requestDto
+    ) {
+        updateProductInteractor.updateProduct(
+                uuid,
+                requestDto.getFantasyName(),
+                Category.valueOf(requestDto.getCategory()),
+                requestDto.getDescription(),
+                requestDto.getPrice(),
+                requestDto.getAvailable()
+        );
+
+        return ResponseEntity.noContent().build();
     }
 }

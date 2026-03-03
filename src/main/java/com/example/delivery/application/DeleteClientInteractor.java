@@ -1,9 +1,7 @@
 package com.example.delivery.application;
 
-import com.example.delivery.domain.model.Client;
 import com.example.delivery.domain.repository.ClientRepositoryPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

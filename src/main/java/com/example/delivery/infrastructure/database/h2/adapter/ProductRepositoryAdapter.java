@@ -1,5 +1,6 @@
 package com.example.delivery.infrastructure.database.h2.adapter;
 
+import com.example.delivery.domain.model.Category;
 import com.example.delivery.domain.model.Product;
 import com.example.delivery.domain.repository.ProductRepositoryPort;
 import com.example.delivery.infrastructure.database.h2.entity.ProductEntity;
@@ -8,6 +9,7 @@ import com.example.delivery.infrastructure.database.h2.repository.ProductJpaRepo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -36,5 +38,21 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
             return null;
         }
         return productMapper.toDomain(productEntity);
+    }
+
+    @Override
+    public void updateProduct(UUID id,
+                              String name,
+                              Category category,
+                              String description,
+                              BigDecimal price,
+                              boolean available) {
+        ProductEntity productEntity = productJpaRepository.findByUuid(id);
+        productEntity.setName(name);
+        productEntity.setCategory(category);
+        productEntity.setDescription(description);
+        productEntity.setPrice(price);
+        productEntity.setAvailable(available);
+        productJpaRepository.save(productEntity);
     }
 }
