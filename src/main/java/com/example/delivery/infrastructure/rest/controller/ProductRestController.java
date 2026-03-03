@@ -64,7 +64,7 @@ public class ProductRestController {
     @Operation(summary = "Actualiza producto", description = "Cambia los datos del producto por nuevos datos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Producto no encontrado"),
-            @ApiResponse(responseCode = "", description = "")
+            @ApiResponse(responseCode = "204", description = "Producto actualizado correctamente")
     })
     @PutMapping("/{uuid}")
     public ResponseEntity<ProductResponseDto> updateProduct(
