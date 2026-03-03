@@ -57,19 +57,13 @@ public class ClientRestController {
 
     @Operation(summary = "Borrar al cliente", description = "Borra al cliente por su id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente encontrado"),
+            @ApiResponse(responseCode = "204", description = "Cliente Eliminado"),
             @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
     })
     @DeleteMapping("/{document}/delete")
-    public ResponseEntity<ClientResponseDto> deleteClient(@PathVariable String document){
-        Client client = getClientByIdInteractor.execute(document);
-
-        if (client == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        deleteClientInteractor.deleteClient(client);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<Void> deleteClient(@PathVariable String document){
+        deleteClientInteractor.deleteClient(document);
+        return ResponseEntity.noContent().build();
     }
 
 }

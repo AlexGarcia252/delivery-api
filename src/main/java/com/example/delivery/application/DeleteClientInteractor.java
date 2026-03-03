@@ -13,12 +13,9 @@ public class DeleteClientInteractor implements IDeleteClientInteractor{
     private final ClientRepositoryPort clientRepositoryPort;
 
     @Override
-    public Client deleteClient(Client client){
-        if(clientRepositoryPort.existsByDocument(client.getDocument())){
-            return clientRepositoryPort.deleteClient(client);
-        }
-        else {
-            return null;
+    public void deleteClient(String id){
+        if(clientRepositoryPort.existsByDocument(id)){
+            clientRepositoryPort.deleteClient(id);
         }
     }
 }
