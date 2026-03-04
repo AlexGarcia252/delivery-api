@@ -8,5 +8,7 @@ import java.util.UUID;
 
 public interface OrderJpaRepository extends JpaRepository<OrderEntity, Long> {
     OrderEntity findByUuid(UUID uuid);
+    void deleteByUuid(UUID uuid);
+    boolean existsByUuid(UUID uuid);
 }
 

@@ -35,6 +35,20 @@ public class OrderRepositoryAdapter implements OrderRepositoryPort {
         }
         return orderMapper.toDomain(orderEntity);
     }
+    //Eliminar orden por UUID
+    @Override
+    public void deleteOrder(UUID uuid) {
+        OrderEntity orderEntity = orderJpaRepository.findByUuid(uuid);
+        //si no encuentra esa orden en la bd, devuelve null
+        if (orderEntity != null) {
+            orderJpaRepository.delete(orderEntity);
+        }
+    }
+    //Verificar si esa orden existe por UUID
+    @Override
+    public boolean existsByUUID(UUID uuid) {
+        return orderJpaRepository.existsByUuid(uuid);
+    }
 }
 
 

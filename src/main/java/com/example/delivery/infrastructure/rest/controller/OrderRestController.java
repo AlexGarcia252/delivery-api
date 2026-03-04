@@ -1,6 +1,7 @@
 package com.example.delivery.infrastructure.rest.controller;
 
 import com.example.delivery.application.ICreateOrderInteractor;
+import com.example.delivery.application.IDeleteOrderInteractor;
 import com.example.delivery.domain.model.Order;
 import com.example.delivery.infrastructure.rest.mapper.OrderDtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Tag(name = "Órdenes", description = "Gestión de órdenes de entrega en el sistema")
 @RestController
 @RequestMapping("/api/order")
@@ -21,6 +24,7 @@ public class OrderRestController {
 
     private final ICreateOrderInteractor createOrderInteractor;
     private final OrderDtoMapper orderDtoMapper;
+    private final IDeleteOrderInteractor deleteOrderInteractor;
 
     @Operation(summary = "Crear nueva orden", description = "Crea una nueva orden de entrega. Se valida que el cliente y producto existan, y se calculan automáticamente los totales.")
     @ApiResponses(value = {
@@ -37,6 +41,16 @@ public class OrderRestController {
         Order createdOrder = createOrderInteractor.createOrder(order);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDtoMapper.toDto(createdOrder));
+    }
+
+    @DeleteMapping("/{uuid}")
+    @Operation(
+            summary = "Eliminar un pedido",
+            description = "Elimina permanentemente un pedido del sistema usando su identificador único (UUID)." //
+    )
+    public ResponseEntity<Void> deleteOrder(@PathVariable UUID uuid) {
+        deleteOrderInteractor.deleteOrder(uuid);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 
