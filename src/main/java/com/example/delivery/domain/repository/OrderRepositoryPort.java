@@ -7,5 +7,7 @@ import java.util.UUID;
 public interface OrderRepositoryPort {
     Order createOrder(Order order);
     Order getOrderByUuid(UUID uuid);
+    void deleteOrder(UUID uuid);
+    boolean existsByUUID(UUID uuid);
 }
 
