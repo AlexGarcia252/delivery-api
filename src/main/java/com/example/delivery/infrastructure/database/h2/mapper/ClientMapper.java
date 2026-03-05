@@ -27,6 +27,16 @@ public class ClientMapper {
         clientEntity.setShippingAddress(domain.getShippingAddress());
         return clientEntity;
     }
+    public   ClientEntity toEntityUpdate (ClientEntity entity, Client client){
+
+        entity.setDocument(client.getDocument());
+        entity.setNameAndSurname(client.getNameAndSurname());
+        entity.setEmail(client.getEmail());
+        entity.setPhoneNumber(client.getPhoneNumber());
+        entity.setShippingAddress(client.getShippingAddress());
+
+        return entity;
+    }
 
 
 }

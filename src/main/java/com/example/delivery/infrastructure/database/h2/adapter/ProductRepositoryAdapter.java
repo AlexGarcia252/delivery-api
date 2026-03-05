@@ -1,7 +1,7 @@
 package com.example.delivery.infrastructure.database.h2.adapter;
 
 import com.example.delivery.domain.model.Product;
-import com.example.delivery.domain.repository.ProductRepositoryPort;
+import com.example.delivery.domain.port.out.ProductRepositoryPort;
 import com.example.delivery.infrastructure.database.h2.entity.ProductEntity;
 import com.example.delivery.infrastructure.database.h2.mapper.ProductMapper;
 import com.example.delivery.infrastructure.database.h2.repository.ProductJpaRepository;

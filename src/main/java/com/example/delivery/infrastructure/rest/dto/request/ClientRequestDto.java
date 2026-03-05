@@ -1,4 +1,4 @@
-package com.example.delivery.infrastructure.rest.controller;
+package com.example.delivery.infrastructure.rest.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

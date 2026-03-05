@@ -1,4 +1,4 @@
-package com.example.delivery.application;
+package com.example.delivery.domain.port.in.iClient;
 
 import com.example.delivery.domain.model.Client;
 

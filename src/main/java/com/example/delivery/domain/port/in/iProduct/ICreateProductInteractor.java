@@ -1,4 +1,4 @@
-package com.example.delivery.application;
+package com.example.delivery.domain.port.in.iProduct;
 
 import com.example.delivery.domain.model.Product;
 

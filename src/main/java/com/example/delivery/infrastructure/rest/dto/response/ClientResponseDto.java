@@ -1,6 +1,5 @@
-package com.example.delivery.infrastructure.rest.controller;
+package com.example.delivery.infrastructure.rest.dto.response;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

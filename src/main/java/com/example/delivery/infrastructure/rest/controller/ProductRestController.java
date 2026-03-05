@@ -1,8 +1,10 @@
 package com.example.delivery.infrastructure.rest.controller;
 
-import com.example.delivery.application.ICreateProductInteractor;
-import com.example.delivery.application.IGetProductByUuidInteractor;
+import com.example.delivery.domain.port.in.iProduct.ICreateProductInteractor;
+import com.example.delivery.domain.port.in.iProduct.IGetProductByUuidInteractor;
 import com.example.delivery.domain.model.Product;
+import com.example.delivery.infrastructure.rest.dto.request.ProductRequestDto;
+import com.example.delivery.infrastructure.rest.dto.response.ProductResponseDto;
 import com.example.delivery.infrastructure.rest.mapper.ProductDtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
