@@ -35,15 +35,18 @@ public class ClientInteractorService implements
 
     @Override
     public Client updateClient(String documen, Client client) {
+
+        Client clientbd = clientRepositoryPort.getClientById(documen);
+
         if(!clientRepositoryPort.existsByDocument(documen)){
             throw  new ClientNotFoundException("no se encontro el documento"+documen);
         }
-        if (
-                client.getNameAndSurname().equals(client.getNameAndSurname()) &&
-                        client.getEmail().equals(client.getEmail()) &&
-                        client.getPhoneNumber().equals(client.getPhoneNumber()) &&
-                        client.getShippingAddress().equals(client.getShippingAddress())
+        if (clientbd.getNameAndSurname().equals(client.getNameAndSurname()) &&
+                        clientbd.getEmail().equals(client.getEmail()) &&
+                        clientbd.getPhoneNumber().equals(client.getPhoneNumber()) &&
+                        clientbd.getShippingAddress().equals(client.getShippingAddress())
         ) {
+            System.out.println("estoy aca");
             throw new ClientConflictException("No se detectaron cambios");
         }
         return clientRepositoryPort.updateClient(documen, client );

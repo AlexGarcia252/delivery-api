@@ -51,7 +51,8 @@ public class ClientRestController {
         return ResponseEntity.ok(clientDtoMapper.toDto(client));
     }
 
-    @Operation(summary = "Actualizar producto por documento", description = "Actualiza la información de un cliente específico usando su documento de identidad.")
+
+    @Operation(summary = "Actualizar cliente por documento", description = "Actualiza la información de un cliente específico usando su documento de identidad.")
     @PutMapping ("/{document}")
     public ResponseEntity<ClientResponseDto> updateClient(@PathVariable String document , @RequestBody ClientRequestDto dto ){
         Client domain = clientDtoMapper.toDomain(dto);
