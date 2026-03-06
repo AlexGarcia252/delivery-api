@@ -37,4 +37,14 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
         }
         return productMapper.toDomain(productEntity);
     }
+
+    @Override
+    public boolean existsByUUID(UUID uuid) {
+        return productJpaRepository.existsByUuid(uuid);
+    }
+
+    @Override
+    public void deleteByUuid(UUID uuid) {
+        productJpaRepository.deleteByUuid(uuid);
+    }
 }

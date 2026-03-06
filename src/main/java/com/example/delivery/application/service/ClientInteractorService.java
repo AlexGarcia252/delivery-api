@@ -36,7 +36,7 @@ public class ClientInteractorService implements
     @Override
     public Client updateClient(String documen, Client client) {
         if(!clientRepositoryPort.existsByDocument(documen)){
-            throw  new ClientNotFoundException("no se encontro el puto documento"+documen);
+            throw  new ClientNotFoundException("no se encontro el documento"+documen);
         }
         if (
                 client.getNameAndSurname().equals(client.getNameAndSurname()) &&

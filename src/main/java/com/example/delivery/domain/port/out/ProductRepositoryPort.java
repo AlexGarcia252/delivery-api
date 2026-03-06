@@ -8,4 +8,6 @@ public interface ProductRepositoryPort {
     Product createProduct(Product product);
     boolean existsByName(String name);
     Product getProductByUuid(UUID uuid);
+    boolean existsByUUID(UUID uuid);
+    void deleteByUuid(UUID uuid);
 }
