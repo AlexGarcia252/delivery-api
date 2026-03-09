@@ -1,5 +1,8 @@
 package com.example.delivery.infrastructure.rest.controller;
 
+import com.example.delivery.application.ICreateClientInteractor;
+import com.example.delivery.application.IDeleteClientInteractor;
+import com.example.delivery.application.IGetClientByIdInteractor;
 import com.example.delivery.application.service.ClientInteractorService;
 import com.example.delivery.domain.model.Client;
 import com.example.delivery.infrastructure.rest.dto.request.ClientRequestDto;
@@ -7,7 +10,6 @@ import com.example.delivery.infrastructure.rest.dto.response.ClientResponseDto;
 import com.example.delivery.infrastructure.rest.mapper.ClientDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class ClientRestController {
 
     private final ClientInteractorService clientService;
+    private final ICreateClientInteractor createClientInteractor;
+    private final IGetClientByIdInteractor getClientByIdInteractor;
+    private final IDeleteClientInteractor deleteClientInteractor;
     private final ClientDtoMapper clientDtoMapper;
 
     @Operation(summary = "Crear un nuevo cliente", description = "Crea un nuevo cliente en el sistema. El documento debe ser único.")
@@ -49,6 +54,7 @@ public class ClientRestController {
         if (client == null) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(clientDtoMapper.toDto(client));
     }
 
@@ -63,6 +69,17 @@ public class ClientRestController {
         Client updateClient = clientService.updateClient(document,domain);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(clientDtoMapper.toDto(updateClient));
+    }
+
+    @Operation(summary = "Borrar al cliente", description = "Borra al cliente por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Cliente Eliminado"),
+            @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
+    })
+    @DeleteMapping("/{document}/delete")
+    public ResponseEntity<Void> deleteClient(@PathVariable String document){
+        deleteClientInteractor.deleteClient(document);
+        return ResponseEntity.noContent().build();
     }
 
 }

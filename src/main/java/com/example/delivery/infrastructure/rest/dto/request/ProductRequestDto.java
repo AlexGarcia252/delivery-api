@@ -1,5 +1,6 @@
 package com.example.delivery.infrastructure.rest.dto.request;
 
+import com.example.delivery.domain.model.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

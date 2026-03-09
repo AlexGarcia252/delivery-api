@@ -8,6 +8,7 @@ import com.example.delivery.infrastructure.database.h2.mapper.ClientMapper;
 import com.example.delivery.infrastructure.database.h2.repository.ClientJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
@@ -49,4 +50,11 @@ public class ClientRepositoryAdapter implements ClientRepositoryPort {
         return ClientMapper.toDomain(clientJpaRepository.save(mappedEntity));
     }
 
+
+    @Override
+    @Transactional
+    public void deleteClient(String id){
+        ClientEntity clientEntity = clientJpaRepository.findByDocument(id);
+        clientJpaRepository.delete(clientEntity);
+    }
 }

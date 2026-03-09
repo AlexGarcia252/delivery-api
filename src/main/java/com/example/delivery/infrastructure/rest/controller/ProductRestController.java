@@ -1,5 +1,9 @@
 package com.example.delivery.infrastructure.rest.controller;
 
+import com.example.delivery.application.ICreateProductInteractor;
+import com.example.delivery.application.IGetProductByUuidInteractor;
+import com.example.delivery.application.IUpdateProductInteractor;
+import com.example.delivery.domain.model.Category;
 import com.example.delivery.application.service.ProductInteractorService;
 import com.example.delivery.domain.exception.product.ProductInvaliUuidException;
 import com.example.delivery.domain.model.Product;
@@ -27,6 +31,9 @@ public class ProductRestController {
 
 
     private final ProductInteractorService producServece;
+    private final ICreateProductInteractor createProductInteractor;
+    private final IGetProductByUuidInteractor getProductByUuidInteractor;
+    private final IUpdateProductInteractor updateProductInteractor;
     private final ProductDtoMapper productDtoMapper;
 
     @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto en el sistema. El nombre debe ser único.")
@@ -67,5 +74,27 @@ public class ProductRestController {
         }
         producServece.deleteProduct(uuid);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "Actualiza producto", description = "Cambia los datos del producto por nuevos datos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado"),
+            @ApiResponse(responseCode = "204", description = "Producto actualizado correctamente")
+    })
+    @PutMapping("/{uuid}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @PathVariable UUID uuid,
+            @Valid @RequestBody ProductRequestDto requestDto
+    ) {
+        updateProductInteractor.updateProduct(
+                uuid,
+                requestDto.getFantasyName(),
+                Category.valueOf(requestDto.getCategory()),
+                requestDto.getDescription(),
+                requestDto.getPrice(),
+                requestDto.getAvailable()
+        );
+
+        return ResponseEntity.noContent().build();
     }
 }

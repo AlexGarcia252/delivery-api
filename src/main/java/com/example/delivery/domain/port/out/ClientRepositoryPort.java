@@ -7,5 +7,6 @@ public interface ClientRepositoryPort {
     boolean existsByDocument(String document);
     Client getClientById(String id);
     Client updateClient(String document, Client client);
+    void deleteClient(String id);
 
 }
