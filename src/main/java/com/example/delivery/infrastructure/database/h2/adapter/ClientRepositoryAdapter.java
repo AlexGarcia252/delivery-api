@@ -54,7 +54,9 @@ public class ClientRepositoryAdapter implements ClientRepositoryPort {
     @Override
     @Transactional
     public void deleteClient(String id){
-        ClientEntity clientEntity = clientJpaRepository.findByDocument(id);
+        ClientEntity clientEntity = clientJpaRepository.findByDocument(id).orElseThrow(
+                ()-> new  IllegalArgumentException("No existe este documento")
+        );
         clientJpaRepository.delete(clientEntity);
     }
 }

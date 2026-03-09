@@ -1,8 +1,5 @@
 package com.example.delivery.infrastructure.rest.controller;
 
-import com.example.delivery.application.ICreateProductInteractor;
-import com.example.delivery.application.IGetProductByUuidInteractor;
-import com.example.delivery.application.IUpdateProductInteractor;
 import com.example.delivery.domain.model.Category;
 import com.example.delivery.application.service.ProductInteractorService;
 import com.example.delivery.domain.exception.product.ProductInvaliUuidException;
@@ -31,9 +28,6 @@ public class ProductRestController {
 
 
     private final ProductInteractorService producServece;
-    private final ICreateProductInteractor createProductInteractor;
-    private final IGetProductByUuidInteractor getProductByUuidInteractor;
-    private final IUpdateProductInteractor updateProductInteractor;
     private final ProductDtoMapper productDtoMapper;
 
     @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto en el sistema. El nombre debe ser único.")
@@ -86,7 +80,7 @@ public class ProductRestController {
             @PathVariable UUID uuid,
             @Valid @RequestBody ProductRequestDto requestDto
     ) {
-        updateProductInteractor.updateProduct(
+        producServece.updateProduct(
                 uuid,
                 requestDto.getFantasyName(),
                 Category.valueOf(requestDto.getCategory()),

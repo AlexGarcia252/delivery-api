@@ -1,8 +1,5 @@
 package com.example.delivery.infrastructure.rest.controller;
 
-import com.example.delivery.application.ICreateClientInteractor;
-import com.example.delivery.application.IDeleteClientInteractor;
-import com.example.delivery.application.IGetClientByIdInteractor;
 import com.example.delivery.application.service.ClientInteractorService;
 import com.example.delivery.domain.model.Client;
 import com.example.delivery.infrastructure.rest.dto.request.ClientRequestDto;
@@ -25,9 +22,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class ClientRestController {
 
     private final ClientInteractorService clientService;
-    private final ICreateClientInteractor createClientInteractor;
-    private final IGetClientByIdInteractor getClientByIdInteractor;
-    private final IDeleteClientInteractor deleteClientInteractor;
     private final ClientDtoMapper clientDtoMapper;
 
     @Operation(summary = "Crear un nuevo cliente", description = "Crea un nuevo cliente en el sistema. El documento debe ser único.")
@@ -78,7 +72,7 @@ public class ClientRestController {
     })
     @DeleteMapping("/{document}/delete")
     public ResponseEntity<Void> deleteClient(@PathVariable String document){
-        deleteClientInteractor.deleteClient(document);
+        clientService.deleteClient(document);
         return ResponseEntity.noContent().build();
     }
 

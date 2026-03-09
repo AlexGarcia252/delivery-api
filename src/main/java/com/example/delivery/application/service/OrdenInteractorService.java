@@ -1,16 +1,22 @@
-package com.example.delivery.application;
+package com.example.delivery.application.service;
 
 import com.example.delivery.domain.model.Order;
-import com.example.delivery.domain.repository.ClientRepositoryPort;
-import com.example.delivery.domain.repository.OrderRepositoryPort;
-import com.example.delivery.domain.repository.ProductRepositoryPort;
+import com.example.delivery.domain.port.in.IOrden.ICreateOrderInteractor;
+import com.example.delivery.domain.port.in.IOrden.IDeleteOrderInteractor;
+import com.example.delivery.domain.port.out.ClientRepositoryPort;
+import com.example.delivery.domain.port.out.OrderRepositoryPort;
+import com.example.delivery.domain.port.out.ProductRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Component
-public class CreateOrderInteractor implements ICreateOrderInteractor {
-
+public class OrdenInteractorService implements
+        ICreateOrderInteractor,
+        IDeleteOrderInteractor
+{
     private final OrderRepositoryPort orderRepositoryPort;
     private final ClientRepositoryPort clientRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;
@@ -37,6 +43,13 @@ public class CreateOrderInteractor implements ICreateOrderInteractor {
         // Persistir la orden en BD
         return orderRepositoryPort.createOrder(order);
     }
+
+    @Override
+    public void deleteOrder(UUID uuid) {
+        if(!orderRepositoryPort.existsByUUID(uuid)){
+            throw new IllegalArgumentException("No se puede eliminar: La orden con UUID " + uuid + " no existe.");
+        }
+        orderRepositoryPort.deleteOrder(uuid);
+    }
+
 }
-
-

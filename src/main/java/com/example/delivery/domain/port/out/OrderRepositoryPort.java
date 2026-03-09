@@ -1,4 +1,4 @@
-package com.example.delivery.domain.repository;
+package com.example.delivery.domain.port.out;
 
 import com.example.delivery.domain.model.Order;
 

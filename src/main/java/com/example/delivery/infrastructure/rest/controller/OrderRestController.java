@@ -1,8 +1,10 @@
 package com.example.delivery.infrastructure.rest.controller;
 
-import com.example.delivery.application.ICreateOrderInteractor;
-import com.example.delivery.application.IDeleteOrderInteractor;
+import com.example.delivery.domain.port.in.IOrden.ICreateOrderInteractor;
+import com.example.delivery.domain.port.in.IOrden.IDeleteOrderInteractor;
 import com.example.delivery.domain.model.Order;
+import com.example.delivery.infrastructure.rest.dto.request.OrderRequestDto;
+import com.example.delivery.infrastructure.rest.dto.response.OrderResponseDto;
 import com.example.delivery.infrastructure.rest.mapper.OrderDtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

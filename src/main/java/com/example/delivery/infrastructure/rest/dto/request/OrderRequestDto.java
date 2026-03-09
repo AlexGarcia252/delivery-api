@@ -1,4 +1,4 @@
-package com.example.delivery.infrastructure.rest.controller;
+package com.example.delivery.infrastructure.rest.dto.request;
 
 import com.example.delivery.domain.model.PaymentMethod;
 import jakarta.validation.constraints.*;

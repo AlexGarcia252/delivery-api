@@ -4,6 +4,7 @@ import com.example.delivery.domain.exception.client.ClientConflictException;
 import com.example.delivery.domain.exception.client.ClientNotFoundException;
 import com.example.delivery.domain.model.Client;
 import com.example.delivery.domain.port.in.iClient.ICreateClientInteractor;
+import com.example.delivery.domain.port.in.iClient.IDeleteClientInteractor;
 import com.example.delivery.domain.port.in.iClient.IGetClientByIdInteractor;
 import com.example.delivery.domain.port.in.iClient.IUpdateClientInteractor;
 import com.example.delivery.domain.port.out.ClientRepositoryPort;
@@ -16,7 +17,8 @@ import org.springframework.stereotype.Component;
 public class ClientInteractorService implements
         ICreateClientInteractor,
         IGetClientByIdInteractor,
-        IUpdateClientInteractor {
+        IUpdateClientInteractor,
+        IDeleteClientInteractor {
 
     private final ClientRepositoryPort clientRepositoryPort;
 
@@ -50,5 +52,12 @@ public class ClientInteractorService implements
             throw new ClientConflictException("No se detectaron cambios");
         }
         return clientRepositoryPort.updateClient(documen, client );
+    }
+
+    @Override
+    public void deleteClient(String id){
+        if(clientRepositoryPort.existsByDocument(id)){
+            clientRepositoryPort.deleteClient(id);
+        }
     }
 }

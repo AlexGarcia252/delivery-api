@@ -1,4 +1,4 @@
-package com.example.delivery.infrastructure.rest.controller;
+package com.example.delivery.infrastructure.rest.dto.response;
 
 import com.example.delivery.domain.model.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonFormat;

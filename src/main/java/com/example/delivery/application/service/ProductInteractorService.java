@@ -1,15 +1,18 @@
 package com.example.delivery.application.service;
 
 import com.example.delivery.domain.exception.product.ProductNotFoundException;
+import com.example.delivery.domain.model.Category;
 import com.example.delivery.domain.model.Product;
 import com.example.delivery.domain.port.in.iProduct.ICreateProductInteractor;
 import com.example.delivery.domain.port.in.iProduct.IDeleteProductInteractor;
 import com.example.delivery.domain.port.in.iProduct.IGetProductByUuidInteractor;
+import com.example.delivery.domain.port.in.iProduct.IUpdateProductInteractor;
 import com.example.delivery.domain.port.out.ProductRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -17,7 +20,8 @@ import java.util.UUID;
 public class ProductInteractorService implements
         ICreateProductInteractor,
         IGetProductByUuidInteractor,
-        IDeleteProductInteractor {
+        IDeleteProductInteractor,
+        IUpdateProductInteractor {
 
     private final ProductRepositoryPort productRepositoryPort;
 
@@ -35,6 +39,21 @@ public class ProductInteractorService implements
     @Override
     public Product execute(UUID uuid) {
         return productRepositoryPort.getProductByUuid(uuid);
+    }
+
+    @Override
+    public void updateProduct(UUID id,
+                              String name,
+                              Category category,
+                              String description,
+                              BigDecimal price,
+                              boolean available) {
+        productRepositoryPort.updateProduct(id,
+                name,
+                category,
+                description,
+                price,
+                available);
     }
 
     @Override
