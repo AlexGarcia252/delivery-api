@@ -7,6 +7,7 @@ import com.example.delivery.infrastructure.rest.dto.response.ClientResponseDto;
 import com.example.delivery.infrastructure.rest.mapper.ClientDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,10 @@ public class ClientRestController {
 
     @Operation(summary = "Actualizar cliente por documento", description = "Actualiza la información de un cliente específico usando su documento de identidad.")
     @PutMapping ("/{document}")
-    public ResponseEntity<ClientResponseDto> updateClient(@PathVariable String document , @RequestBody ClientRequestDto dto ){
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Datos inválidos o incompletos"),
+    })
+    public ResponseEntity<ClientResponseDto> updateClient(@PathVariable String document ,@Valid @RequestBody ClientRequestDto dto ){
         Client domain = clientDtoMapper.toDomain(dto);
         Client updateClient = clientService.updateClient(document,domain);
 
