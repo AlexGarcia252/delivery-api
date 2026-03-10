@@ -2,7 +2,7 @@ package com.example.delivery.infrastructure.database.h2.adapter;
 
 import com.example.delivery.domain.model.Category;
 import com.example.delivery.domain.model.Product;
-import com.example.delivery.domain.repository.ProductRepositoryPort;
+import com.example.delivery.domain.port.out.ProductRepositoryPort;
 import com.example.delivery.infrastructure.database.h2.entity.ProductEntity;
 import com.example.delivery.infrastructure.database.h2.mapper.ProductMapper;
 import com.example.delivery.infrastructure.database.h2.repository.ProductJpaRepository;
@@ -15,6 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Component
 public class ProductRepositoryAdapter implements ProductRepositoryPort {
+
     private final ProductJpaRepository productJpaRepository;
     private final ProductMapper productMapper;
 
@@ -38,6 +39,16 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
             return null;
         }
         return productMapper.toDomain(productEntity);
+    }
+
+    @Override
+    public boolean existsByUUID(UUID uuid) {
+        return productJpaRepository.existsByUuid(uuid);
+    }
+
+    @Override
+    public void deleteByUuid(UUID uuid) {
+        productJpaRepository.deleteByUuid(uuid);
     }
 
     @Override

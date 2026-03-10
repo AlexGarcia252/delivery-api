@@ -1,7 +1,8 @@
 package com.example.delivery.infrastructure.database.h2.adapter;
 
 import com.example.delivery.domain.model.Order;
-import com.example.delivery.domain.repository.OrderRepositoryPort;
+
+import com.example.delivery.domain.port.out.OrderRepositoryPort;
 import com.example.delivery.infrastructure.database.h2.entity.OrderEntity;
 import com.example.delivery.infrastructure.database.h2.mapper.OrderMapper;
 import com.example.delivery.infrastructure.database.h2.repository.OrderJpaRepository;

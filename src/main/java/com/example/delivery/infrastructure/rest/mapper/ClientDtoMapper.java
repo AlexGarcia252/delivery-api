@@ -1,8 +1,8 @@
 package com.example.delivery.infrastructure.rest.mapper;
 
 import com.example.delivery.domain.model.Client;
-import com.example.delivery.infrastructure.rest.controller.ClientRequestDto;
-import com.example.delivery.infrastructure.rest.controller.ClientResponseDto;
+import com.example.delivery.infrastructure.rest.dto.request.ClientRequestDto;
+import com.example.delivery.infrastructure.rest.dto.response.ClientResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component

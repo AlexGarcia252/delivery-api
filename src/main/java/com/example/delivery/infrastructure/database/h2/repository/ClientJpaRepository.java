@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface ClientJpaRepository extends JpaRepository<ClientEntity, Long> {
 
     boolean existsByDocument(String document);
-    ClientEntity findByDocument(String document);
+    Optional<ClientEntity> findByDocument(String document);
+
 }

@@ -1,9 +1,9 @@
 package com.example.delivery.infrastructure.rest.controller;
 
-import com.example.delivery.application.ICreateClientInteractor;
-import com.example.delivery.application.IDeleteClientInteractor;
-import com.example.delivery.application.IGetClientByIdInteractor;
+import com.example.delivery.application.service.ClientInteractorService;
 import com.example.delivery.domain.model.Client;
+import com.example.delivery.infrastructure.rest.dto.request.ClientRequestDto;
+import com.example.delivery.infrastructure.rest.dto.response.ClientResponseDto;
 import com.example.delivery.infrastructure.rest.mapper.ClientDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequiredArgsConstructor
 public class ClientRestController {
 
-    private final ICreateClientInteractor createClientInteractor;
-    private final IGetClientByIdInteractor getClientByIdInteractor;
-    private final IDeleteClientInteractor deleteClientInteractor;
+    private final ClientInteractorService clientService;
     private final ClientDtoMapper clientDtoMapper;
 
     @Operation(summary = "Crear un nuevo cliente", description = "Crea un nuevo cliente en el sistema. El documento debe ser único.")
@@ -35,7 +33,7 @@ public class ClientRestController {
     @PostMapping
     public ResponseEntity<ClientResponseDto> createClient(@RequestBody @Valid ClientRequestDto dto) {
         Client domain = clientDtoMapper.toDomain(dto);
-        Client saved = createClientInteractor.createClient(domain);
+        Client saved = clientService.createClient(domain);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientDtoMapper.toDto(saved));
     }
 
@@ -46,13 +44,25 @@ public class ClientRestController {
     })
     @GetMapping("/{document}")
     public ResponseEntity<ClientResponseDto> getClientByDocument(@PathVariable String document) {
-        Client client = getClientByIdInteractor.execute(document);
-
+        Client client = clientService.execute(document);
         if (client == null) {
             return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok(clientDtoMapper.toDto(client));
+    }
+
+
+    @Operation(summary = "Actualizar cliente por documento", description = "Actualiza la información de un cliente específico usando su documento de identidad.")
+    @PutMapping ("/{document}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Datos inválidos o incompletos"),
+    })
+    public ResponseEntity<ClientResponseDto> updateClient(@PathVariable String document ,@Valid @RequestBody ClientRequestDto dto ){
+        Client domain = clientDtoMapper.toDomain(dto);
+        Client updateClient = clientService.updateClient(document,domain);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(clientDtoMapper.toDto(updateClient));
     }
 
     @Operation(summary = "Borrar al cliente", description = "Borra al cliente por su id")
@@ -62,7 +72,7 @@ public class ClientRestController {
     })
     @DeleteMapping("/{document}/delete")
     public ResponseEntity<Void> deleteClient(@PathVariable String document){
-        deleteClientInteractor.deleteClient(document);
+        clientService.deleteClient(document);
         return ResponseEntity.noContent().build();
     }
 

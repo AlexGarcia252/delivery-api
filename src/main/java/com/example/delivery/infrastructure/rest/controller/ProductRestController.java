@@ -1,10 +1,11 @@
 package com.example.delivery.infrastructure.rest.controller;
 
-import com.example.delivery.application.ICreateProductInteractor;
-import com.example.delivery.application.IGetProductByUuidInteractor;
-import com.example.delivery.application.IUpdateProductInteractor;
 import com.example.delivery.domain.model.Category;
+import com.example.delivery.application.service.ProductInteractorService;
+import com.example.delivery.domain.exception.product.ProductInvaliUuidException;
 import com.example.delivery.domain.model.Product;
+import com.example.delivery.infrastructure.rest.dto.request.ProductRequestDto;
+import com.example.delivery.infrastructure.rest.dto.response.ProductResponseDto;
 import com.example.delivery.infrastructure.rest.mapper.ProductDtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,9 +26,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductRestController {
 
-    private final ICreateProductInteractor createProductInteractor;
-    private final IGetProductByUuidInteractor getProductByUuidInteractor;
-    private final IUpdateProductInteractor updateProductInteractor;
+
+    private final ProductInteractorService producServece;
     private final ProductDtoMapper productDtoMapper;
 
     @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto en el sistema. El nombre debe ser único.")
@@ -39,7 +39,7 @@ public class ProductRestController {
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductRequestDto requestDto) {
         Product productToCreate = productDtoMapper.toDomain(requestDto);
-        Product createdProduct = createProductInteractor.createProduct(productToCreate);
+        Product createdProduct = producServece.createProduct(productToCreate);
         ProductResponseDto response = productDtoMapper.toDto(createdProduct);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -51,7 +51,7 @@ public class ProductRestController {
     })
     @GetMapping("/{uuid}")
     public ResponseEntity<ProductResponseDto> getProductByUuid(@PathVariable UUID uuid) {
-        Product product = getProductByUuidInteractor.execute(uuid);
+        Product product = producServece.execute(uuid);
 
         if (product == null) {
             return ResponseEntity.notFound().build();
@@ -59,6 +59,15 @@ public class ProductRestController {
 
         ProductResponseDto response = productDtoMapper.toDto(product);
         return ResponseEntity.ok(response);
+    }
+    @Operation(summary = "Eliminar producto por UUID", description = "Elimina la infomacion de producto usando su identificador único UUID de la base de datos.")
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<Void> deleteProductUuid(@PathVariable UUID uuid){
+        if (!producServece.IvalidationUUid(uuid)) {
+            throw new ProductInvaliUuidException("Formato de UUID inválido: " + uuid);
+        }
+        producServece.deleteProduct(uuid);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Actualiza producto", description = "Cambia los datos del producto por nuevos datos")
@@ -71,7 +80,7 @@ public class ProductRestController {
             @PathVariable UUID uuid,
             @Valid @RequestBody ProductRequestDto requestDto
     ) {
-        updateProductInteractor.updateProduct(
+        producServece.updateProduct(
                 uuid,
                 requestDto.getFantasyName(),
                 Category.valueOf(requestDto.getCategory()),

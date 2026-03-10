@@ -2,8 +2,8 @@ package com.example.delivery.infrastructure.rest.mapper;
 
 import com.example.delivery.domain.model.Category;
 import com.example.delivery.domain.model.Product;
-import com.example.delivery.infrastructure.rest.controller.ProductRequestDto;
-import com.example.delivery.infrastructure.rest.controller.ProductResponseDto;
+import com.example.delivery.infrastructure.rest.dto.request.ProductRequestDto;
+import com.example.delivery.infrastructure.rest.dto.response.ProductResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
