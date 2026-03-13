@@ -38,7 +38,11 @@ public class ProductInteractorService implements
 
     @Override
     public Product execute(UUID uuid) {
-        return productRepositoryPort.getProductByUuid(uuid);
+        Product product = productRepositoryPort.getProductByUuid(uuid);
+        if (product == null) {
+            throw new ProductNotFoundException("No se encontro el producto con UUID: " + uuid);
+        }
+        return product;
     }
 
     @Override

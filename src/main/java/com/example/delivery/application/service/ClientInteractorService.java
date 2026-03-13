@@ -24,15 +24,20 @@ public class ClientInteractorService implements
 
     @Override
     public Client createClient(Client client) {
+
         if (clientRepositoryPort.existsByDocument(client.getDocument())) {
-            throw new IllegalArgumentException("Ya existe un cliente con el documento: " + client.getDocument());
+            throw new ClientConflictException("Ya existe un cliente con el documento: " + client.getDocument());
         }
         return clientRepositoryPort.createClient(client);
     }
 
     @Override
     public Client execute(String document) {
-        return clientRepositoryPort.getClientById(document);
+        Client client = clientRepositoryPort.getClientById(document);
+        if (client == null) {
+            throw new ClientNotFoundException("No se encontro el cliente con documento: " + document);
+        }
+        return client;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class ClientInteractorService implements
         Client clientbd = clientRepositoryPort.getClientById(documen);
 
         if(!clientRepositoryPort.existsByDocument(documen)){
-            throw  new ClientNotFoundException("no se encontro el documento"+documen);
+            throw new ClientNotFoundException("No se encontro el cliente con documento: " + documen);
         }
         if (clientbd.getNameAndSurname().equals(client.getNameAndSurname()) &&
                         clientbd.getEmail().equals(client.getEmail()) &&
@@ -56,8 +61,9 @@ public class ClientInteractorService implements
 
     @Override
     public void deleteClient(String id){
-        if(clientRepositoryPort.existsByDocument(id)){
-            clientRepositoryPort.deleteClient(id);
+        if (!clientRepositoryPort.existsByDocument(id)) {
+            throw new ClientNotFoundException("No se encontro el cliente con documento: " + id);
         }
+        clientRepositoryPort.deleteClient(id);
     }
 }
