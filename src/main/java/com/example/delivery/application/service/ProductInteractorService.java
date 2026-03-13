@@ -9,14 +9,14 @@ import com.example.delivery.domain.port.in.iProduct.IGetProductByUuidInteractor;
 import com.example.delivery.domain.port.in.iProduct.IUpdateProductInteractor;
 import com.example.delivery.domain.port.out.ProductRepositoryPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class ProductInteractorService implements
         ICreateProductInteractor,
         IGetProductByUuidInteractor,

@@ -52,6 +52,7 @@ public class OrderRepositoryAdapter implements OrderRepositoryPort {
         return orderJpaRepository.existsByUuid(uuid);
     }
 
+    // Marcar orden como entregada
     @Override
     public Order deliverOrder(UUID uuid, LocalDateTime deliveredDate) {
         OrderEntity orderEntity = orderJpaRepository.findByUuid(uuid);
@@ -64,5 +65,3 @@ public class OrderRepositoryAdapter implements OrderRepositoryPort {
         return orderMapper.toDomain(saved);
     }
 }
-
-

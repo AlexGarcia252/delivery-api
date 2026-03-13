@@ -5,3 +5,4 @@ public class ClientValidationException extends RuntimeException {
         super(message);
     }
 }
+

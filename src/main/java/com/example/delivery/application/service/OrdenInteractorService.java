@@ -10,14 +10,16 @@ import com.example.delivery.domain.port.in.IOrden.IDeliverOrderInteractor;
 import com.example.delivery.domain.port.out.ClientRepositoryPort;
 import com.example.delivery.domain.port.out.OrderRepositoryPort;
 import com.example.delivery.domain.port.out.ProductRepositoryPort;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Component
+@Transactional
+@Service
 public class OrdenInteractorService implements
         ICreateOrderInteractor,
         IDeleteOrderInteractor,
@@ -52,7 +54,7 @@ public class OrdenInteractorService implements
 
     @Override
     public void deleteOrder(UUID uuid) {
-        if(!orderRepositoryPort.existsByUUID(uuid)){
+        if (!orderRepositoryPort.existsByUUID(uuid)) {
             throw new OrderNotFoundException("La orden con UUID " + uuid + " no existe");
         }
         orderRepositoryPort.deleteOrder(uuid);

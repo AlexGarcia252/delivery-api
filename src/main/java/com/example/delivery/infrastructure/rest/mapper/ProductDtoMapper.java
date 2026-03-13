@@ -4,29 +4,30 @@ import com.example.delivery.domain.model.Category;
 import com.example.delivery.domain.model.Product;
 import com.example.delivery.infrastructure.rest.dto.request.ProductRequestDto;
 import com.example.delivery.infrastructure.rest.dto.response.ProductResponseDto;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
-@Component
-public class ProductDtoMapper {
-    public Product toDomain(ProductRequestDto dto) {
+@Mapper(componentModel = "spring")
+public interface ProductDtoMapper {
+    @Mapping(target = "uuid", ignore = true)
+    @Mapping(source = "fantasyName", target = "name")
+    @Mapping(source = "price", target = "basePrice")
+    @Mapping(source = "category", target = "category", qualifiedByName = "stringToCategory")
+    Product toDomain(ProductRequestDto dto);
 
-        return new Product(
-                null,
-                dto.getFantasyName(),
-                Category.valueOf(dto.getCategory()),
-                dto.getDescription(),
-                dto.getPrice(),
-                dto.getAvailable()
-        );
+    @Mapping(source = "name", target = "fantasyName")
+    @Mapping(source = "basePrice", target = "price")
+    @Mapping(source = "category", target = "category", qualifiedByName = "categoryToString")
+    ProductResponseDto toDto(Product domain);
+
+    @Named("stringToCategory")
+    default Category stringToCategory(String category) {
+        return category == null ? null : Category.valueOf(category.trim().toUpperCase());
     }
-    public ProductResponseDto toDto(Product domain) {
-        return new ProductResponseDto(
-                domain.getUuid(),
-                domain.getName(),
-                domain.getCategory().name(),
-                domain.getDescription(),
-                domain.getBasePrice(),
-                domain.isAvailable()
-        );
+
+    @Named("categoryToString")
+    default String categoryToString(Category category) {
+        return category == null ? null : category.name();
     }
 }

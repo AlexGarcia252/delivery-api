@@ -9,11 +9,11 @@ import com.example.delivery.domain.port.in.iClient.IGetClientByIdInteractor;
 import com.example.delivery.domain.port.in.iClient.IUpdateClientInteractor;
 import com.example.delivery.domain.port.out.ClientRepositoryPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class ClientInteractorService implements
         ICreateClientInteractor,
         IGetClientByIdInteractor,
@@ -24,7 +24,7 @@ public class ClientInteractorService implements
 
     @Override
     public Client createClient(Client client) {
-
+        client.validateAndFormat();
         if (clientRepositoryPort.existsByDocument(client.getDocument())) {
             throw new ClientConflictException("Ya existe un cliente con el documento: " + client.getDocument());
         }
@@ -42,16 +42,17 @@ public class ClientInteractorService implements
 
     @Override
     public Client updateClient(String documen, Client client) {
+        client.validateAndFormat();
 
         Client clientbd = clientRepositoryPort.getClientById(documen);
 
         if(!clientRepositoryPort.existsByDocument(documen)){
-            throw new ClientNotFoundException("No se encontro el cliente con documento: " + documen);
+            throw  new ClientNotFoundException("no se encontro el documento"+documen);
         }
         if (clientbd.getNameAndSurname().equals(client.getNameAndSurname()) &&
-                        clientbd.getEmail().equals(client.getEmail()) &&
-                        clientbd.getPhoneNumber().equals(client.getPhoneNumber()) &&
-                        clientbd.getShippingAddress().equals(client.getShippingAddress())
+                clientbd.getEmail().equals(client.getEmail()) &&
+                clientbd.getPhoneNumber().equals(client.getPhoneNumber()) &&
+                clientbd.getShippingAddress().equals(client.getShippingAddress())
         ) {
             System.out.println("estoy aca");
             throw new ClientConflictException("No se detectaron cambios");

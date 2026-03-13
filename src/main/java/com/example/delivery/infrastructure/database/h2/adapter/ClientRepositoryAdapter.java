@@ -21,7 +21,7 @@ public class ClientRepositoryAdapter implements ClientRepositoryPort {
     public Client createClient(Client client) {
         ClientEntity clientEntity = clientMapper.toEntity(client);
         ClientEntity saved = clientJpaRepository.save(clientEntity);
-        return ClientMapper.toDomain(saved);
+        return clientMapper.toDomain(saved);
     }
 
     @Override
@@ -34,11 +34,7 @@ public class ClientRepositoryAdapter implements ClientRepositoryPort {
         ClientEntity clientEntity = clientJpaRepository.findByDocument(id).orElseThrow(
                 ()-> new ClientNotFoundException("No existe este documento")
         );
-        if (clientEntity == null) {
-            return null;
-        }
-        Client client = ClientMapper.toDomain(clientEntity);
-        return client;
+        return clientMapper.toDomain(clientEntity);
     }
     @Override
     public Client updateClient(String document, Client client) {
@@ -46,8 +42,8 @@ public class ClientRepositoryAdapter implements ClientRepositoryPort {
                 new ClientNotFoundException("No existe este documento")//manejar excepcion correspondinete
         );
 
-        ClientEntity mappedEntity = clientMapper.toEntityUpdate(entity,client); //TODO: implementar mapper de entidad a pojo con los nuevos datos
-        return ClientMapper.toDomain(clientJpaRepository.save(mappedEntity));
+        clientMapper.updateEntityFromDomain(client, entity);
+        return clientMapper.toDomain(clientJpaRepository.save(entity));
     }
 
 
