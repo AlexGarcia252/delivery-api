@@ -52,7 +52,7 @@ class ClientInteractorServiceTest {
     // ─────────────────────────────────────────────────
     // createClient
     // ─────────────────────────────────────────────────
-    @Disabled
+   // @Disabled
     @Nested
     @DisplayName("createClient")
     class CreateClient {
