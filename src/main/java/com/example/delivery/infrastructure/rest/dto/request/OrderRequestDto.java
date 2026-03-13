@@ -16,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderRequestDto {
     @NotBlank(message = "El documento del cliente es obligatorio")
+    @Pattern(regexp = "^(CC|CE|P)-\\d+$", message = "El documento debe tener formato CC-<numeros>, CE-<numeros> o P-<numeros>")
     @Size(max = 20, message = "El documento no puede exceder 20 caracteres")
     private String clientDocument;
 

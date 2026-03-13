@@ -2,29 +2,21 @@ package com.example.delivery.infrastructure.database.h2.mapper;
 
 import com.example.delivery.domain.model.Product;
 import com.example.delivery.infrastructure.database.h2.entity.ProductEntity;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class ProductMapper {
-    public ProductEntity toEntity(Product product){
-        ProductEntity entity= new ProductEntity();
-        entity.setUuid(product.getUuid());
-        entity.setName(product.getName());
-        entity.setCategory(product.getCategory());
-        entity.setDescription(product.getDescription());
-        entity.setPrice(product.getBasePrice());
-        entity.setAvailable(product.isAvailable());
-        return  entity;
-    }
-    public Product toDomain(ProductEntity productEntity){
-        if (productEntity == null) return null;
-        Product product= new Product();
-        product.setUuid(productEntity.getUuid());
-        product.setName(productEntity.getName());
-        product.setCategory(productEntity.getCategory());
-        product.setDescription(productEntity.getDescription());
-        product.setBasePrice(productEntity.getPrice());
-        product.setAvailable(productEntity.isAvailable());
-        return product;
-    }
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "basePrice", target = "price")
+    ProductEntity toEntity(Product product);
+
+    @Mapping(source = "price", target = "basePrice")
+    Product toDomain(ProductEntity productEntity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "uuid", ignore = true)
+    @Mapping(source = "basePrice", target = "price")
+    void updateEntityFromDomain(Product product, @MappingTarget ProductEntity entity);
 }

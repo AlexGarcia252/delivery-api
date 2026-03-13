@@ -9,6 +9,7 @@ import com.example.delivery.infrastructure.database.h2.repository.OrderJpaReposi
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -50,6 +51,17 @@ public class OrderRepositoryAdapter implements OrderRepositoryPort {
     public boolean existsByUUID(UUID uuid) {
         return orderJpaRepository.existsByUuid(uuid);
     }
+
+    // Marcar orden como entregada
+    @Override
+    public Order deliverOrder(UUID uuid, LocalDateTime deliveredDate) {
+        OrderEntity orderEntity = orderJpaRepository.findByUuid(uuid);
+        if (orderEntity == null) {
+            return null;
+        }
+        orderEntity.setDelivered(true);
+        orderEntity.setDeliveredDate(deliveredDate);
+        OrderEntity saved = orderJpaRepository.save(orderEntity);
+        return orderMapper.toDomain(saved);
+    }
 }
-
-

@@ -59,11 +59,8 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
                               BigDecimal price,
                               boolean available) {
         ProductEntity productEntity = productJpaRepository.findByUuid(id);
-        productEntity.setName(name);
-        productEntity.setCategory(category);
-        productEntity.setDescription(description);
-        productEntity.setPrice(price);
-        productEntity.setAvailable(available);
+        Product product = new Product(id, name, category, description, price, available);
+        productMapper.updateEntityFromDomain(product, productEntity);
         productJpaRepository.save(productEntity);
     }
 }

@@ -3,27 +3,11 @@ package com.example.delivery.infrastructure.rest.mapper;
 import com.example.delivery.domain.model.Client;
 import com.example.delivery.infrastructure.rest.dto.request.ClientRequestDto;
 import com.example.delivery.infrastructure.rest.dto.response.ClientResponseDto;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class ClientDtoMapper {
-    public Client toDomain(ClientRequestDto dto) {
-        return new Client(
-                dto.getDocument(),
-                dto.getNameAndSurname(),
-                dto.getEmail(),
-                dto.getPhoneNumber(),
-                dto.getShippingAddress()
-        );
-    }
+@Mapper(componentModel = "spring")
+public interface ClientDtoMapper {
+    Client toDomain(ClientRequestDto dto);
 
-    public ClientResponseDto toDto(Client domain) {
-        return new ClientResponseDto(
-                domain.getDocument(),
-                domain.getNameAndSurname(),
-                domain.getEmail(),
-                domain.getPhoneNumber(),
-                domain.getShippingAddress()
-        );
-    }
+    ClientResponseDto toDto(Client domain);
 }
