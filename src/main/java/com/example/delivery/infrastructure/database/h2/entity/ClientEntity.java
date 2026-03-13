@@ -33,19 +33,4 @@ public class ClientEntity {
 
     private boolean deleted = false;
 
-    //@OneToMany(
-    //        mappedBy = "client",
-    //        orphanRemoval = true,
-    //        cascade = CascadeType.ALL
-    //)
-    //private Set<Order> orders = new HashSet<>();
-
-    public ClientEntity(String document, String nameAndSurname, String email, String phoneNumber, String shippingAddress) {
-        this.document = document;
-        this.nameAndSurname = nameAndSurname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.shippingAddress = shippingAddress;
-    }
-
 }

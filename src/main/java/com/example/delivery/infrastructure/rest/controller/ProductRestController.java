@@ -53,10 +53,6 @@ public class ProductRestController {
     public ResponseEntity<ProductResponseDto> getProductByUuid(@PathVariable UUID uuid) {
         Product product = producServece.execute(uuid);
 
-        if (product == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         ProductResponseDto response = productDtoMapper.toDto(product);
         return ResponseEntity.ok(response);
     }
